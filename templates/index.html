@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather Predictor</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <main class="container">
+
+        <header>
+            <h1>Weather Predictor</h1>
+            <p>Predict tomorrow's weather using Machine Learning</p>
+        </header>
+
+        <section class="card">
+
+            <h2>Weather Parameters</h2>
+
+            <form method="POST">
+
+                <div class="form-group">
+                    <label for="mean_temp">Average Temperature (°C)</label>
+                    <input
+                        type="number"
+                        id="mean_temp"
+                        name="mean_temp"
+                        step="any"
+                        required
+                        value="{{ request.form.get('mean_temp', '') }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="min_temp">Minimum Temperature (°C)</label>
+                    <input
+                        type="number"
+                        id="min_temp"
+                        name="min_temp"
+                        step="any"
+                        required
+                        value="{{ request.form.get('min_temp', '') }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="max_temp">Maximum Temperature (°C)</label>
+                    <input
+                        type="number"
+                        id="max_temp"
+                        name="max_temp"
+                        step="any"
+                        required
+                        value="{{ request.form.get('max_temp', '') }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="precipitation">Precipitation (mm)</label>
+                    <input
+                        type="number"
+                        id="precipitation"
+                        name="precipitation"
+                        min="0"
+                        step="any"
+                        required
+                        value="{{ request.form.get('precipitation', '') }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="wind_speed">Maximum Wind Speed (km/h)</label>
+                    <input
+                        type="number"
+                        id="wind_speed"
+                        name="wind_speed"
+                        min="0"
+                        step="any"
+                        required
+                        value="{{ request.form.get('wind_speed', '') }}"
+                    >
+                </div>
+
+                <button type="submit">Predict Weather</button>
+
+            </form>
+
+            {% if error %}
+                <div class="error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+        </section>
+
+        {% if result %}
+            <section class="card results">
+
+                <h2>Weather Forecast</h2>
+
+                <div class="result-item">
+                    <span>Temperature Tomorrow</span>
+                    <strong>{{ result.temperature }} °C</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Rain Probability</span>
+                    <strong>{{ result.rain_probability }}%</strong>
+                </div>
+
+                <div class="rain-status
+                    {% if result.rain %}rain{% else %}no-rain{% endif %}">
+
+                    {% if result.rain %}
+                        Rain Tomorrow
+                    {% else %}
+                        No Rain Tomorrow
+                    {% endif %}
+
+                </div>
+
+            </section>
+        {% endif %}
+
+        <footer>
+            <p>Powered by Random Forest Machine Learning</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
